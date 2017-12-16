@@ -1,0 +1,184 @@
+
+         package mascota;
+
+         import java.util.Scanner;
+
+
+public class StartGame {
+
+    private Mascota mascota;
+    private Scanner sc;
+
+    public StartGame () {
+        mascota = new Mascota();
+        sc = new Scanner (System.in);
+        preguntaNombre();
+        preguntaEdad();
+    }
+
+    private void preguntaNombre (){
+        System.out.print("Nombre de la mascota: ");
+        String nombre = sc.nextLine();
+        mascota.setNombre(nombre);
+    }
+
+    private void preguntaEdad (){
+        System.out.print("Edad de la mascota: ");
+        int edad = sc.nextInt();
+        mascota.setEdad(edad);
+    }
+
+    private int presentaMenu(){
+        System.out.println("##########################################");
+        System.out.println("Selecciona una opcion que deseas hacer con " + mascota.getNombre() + "?");
+        System.out.println("[1] - Alimentar");
+        System.out.println("[2] - Bañar");
+        System.out.println("[3] - Jugar");
+        System.out.println("\n[0] - Salir");
+        System.out.print("Opcion: ");
+        int opc = sc.nextInt();
+        return opc;
+    }
+
+    public static void main(String [] args) {
+        StartGame game = new StartGame();
+        boolean continuar = true;
+        do{
+            int opc = game.presentaMenu();
+            switch(opc){
+                case 0:
+                    continuar = false;
+                    break;
+                case 1:
+                    System.out.println("Alimentado..");
+                    game.mascota.alimentar();
+                    System.out.println("Nivel de hambre: " + game.mascota.getHambre());
+                    break;
+                case 2:
+                    System.out.println("Bañado..");
+                    game.mascota.bañarse();
+                    System.out.println("Nivel de limpieza: " + game.mascota.getLimpieza());
+                    break;
+                case 3:
+                    System.out.println("Jugando..");
+                    game.mascota.jugar();
+                    System.out.println("Nivel de limpieza: " + game.mascota.getLimpieza());
+                    System.out.println("Nivel de hambre: " + game.mascota.getHambre());
+                    System.out.println("Nivel de energia:" + game.mascota.getEnergia());
+                    break;
+                default:
+                    System.out.println("Opcion incorrecta. Intentalo de nuevo");
+            }
+
+        } while(continuar);
+    }
+}package mascota;
+
+        import java.util.Vector;
+
+
+public class Mascota {
+    private String nombre;
+    private int edad;
+    private int energia;
+    private int hambre;
+    private int limpieza;
+    private Vector<String> items;
+    private boolean alive = true;
+
+    public Mascota(String nombre, int edad) {
+        this();//Esto llama al contructor por defecto(vacio)
+        this.nombre = nombre;
+        this.edad = edad;
+
+    }
+
+    public Mascota(){
+        nombre = new String();
+        edad=0;
+        energia = 100;
+        hambre = 0;
+        limpieza = 100;
+        items = new Vector<String>();
+
+    }
+
+    public void alimentar (){
+        if (alive) {
+            if (hambre >=5){
+                hambre -=5;
+            }else{
+                hambre = 0;
+            }
+        }
+    }
+
+    public void jugar (){
+        if(alive){
+            hambre += 5;
+            energia -= 4;
+            limpieza -= 5;
+            if(hambre >= 100  ||  energia < 1) {
+                //muere
+                alive = false;
+            }
+        }
+    }
+
+    public void bañarse () {
+        if (alive) {
+            limpieza += 10;
+        }
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public int getEnergia() {
+        return energia;
+    }
+
+    public void setEnergia (int energia) {
+        this.energia = energia;
+    }
+
+    public int getHambre (){
+        return hambre;
+    }
+
+    public void setHambre(int hambre) {
+        this.hambre = hambre;
+    }
+
+    public int getLimpieza () {
+        return limpieza;
+    }
+
+    public void setLimpieza (int limpieza) {
+        this.limpieza =  limpieza;
+    }
+
+    public Vector<String> getItems() {
+        return items;
+    }
+
+    public void setItems(Vector<String> items) {
+        this.items = items;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
